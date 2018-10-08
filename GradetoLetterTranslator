@@ -1,0 +1,60 @@
+'''
+Given the percentage grade for the course, calculate and return the letter
+grade that would appear in the Ryerson grades transcript, as defined on the
+page Ryerson Grade Scales. The letter grade should be returned as a string
+that consists of the uppercase letter followed by the possible modifier
+"+" or "-". The function should work correctly for all values of pct
+from 0 to 120.
+
+I am going to try this exercise by webscraping the Ryerson data first to give
+me some practice with BeautifulSoup again.
+'''
+
+# Do some imports for the Webscraping
+from bs4 import BeautifulSoup as bs
+import requests
+
+# Retrieve the Ryerson page text and parse it
+page = requests.get('https://www.ryerson.ca/registrar/faculty/grading/gradescales_ugrad/')
+soup = bs(page.text, 'html.parser')
+
+# Let's corral the data now
+# Borrowed the method from here: https://www.youtube.com/watch?v=F1kZ39SvuGE&list=LL5pls3nT1zMLKQRnh1eu64g&index=5&t=0s
+grade_info = soup.find('tbody')
+
+data = []
+for tr in grade_info.find_all('tr'):
+    values = [td.text for td in tr.find_all('td')]
+    data.append(values)
+
+# The first element is the header - so returns an empty list and must be cleaved
+data = data[1:]
+
+# There is probably a better way to do this, but I am just setting up parallel lists to check against
+grade_letters = []
+grade_lbounds = []
+for item in data:
+    grade_letters.append(item[0])
+    grade_lbounds.append(item[-1][:2]) # Just looking for the first two digits here
+
+# Collect the grade to be evaluated and make sure that it is valid
+def is_float(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
+
+# Get the input and make sure the input is in range
+def get_num():
+    valid = False
+    while not valid:
+        grade_input = input('Grade Value (0-120): ')
+        if is_float(grade_input):
+            my_num = float(grade_input)
+            if (my_num >= 0) and (my_num <= 120):
+                valid = True
+    return my_num
+
+# Valid input gets assigned to a global variable
+num = get_num()
