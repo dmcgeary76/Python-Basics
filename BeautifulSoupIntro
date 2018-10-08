@@ -1,0 +1,42 @@
+from bs4 import BeautifulSoup as bs
+import requests
+
+# Initialize some lists
+receiver_years = []
+receiver_yards = []
+receiver_names = []
+start_years = []
+end_years = []
+
+
+# Pull in the page data
+page = requests.get('https://www.pro-football-reference.com/leaders/rec_yds_career.htm')
+soup = bs(page.text, 'html.parser')
+
+# Create lists for the target data sets
+receiver_name_list = soup.findAll('td', attrs={'data-stat':'player'})
+receiver_yards_list = soup.findAll('td', attrs={'data-stat':'rec_yds'})
+receiver_years_list = soup.findAll('td', attrs={'data-stat':'years'})
+
+# Parse the text to isolate individual values for each null list
+for receiver in receiver_name_list:
+    receiver_names.append(receiver.text)
+for years in receiver_years_list:
+    receiver_years.append(years.text)
+for span in receiver_years:
+    start_years.append(int(span[0:4]))  # Convert to int to do some math
+for span in receiver_years:
+    end_years.append(int(span[5:9]))    # Convert to int to do some math
+for yards in receiver_yards_list:
+    receiver_yards.append(int(yards.text.replace(',','')))   # Convert to int to do some math
+
+# Check the data
+list_len = len(receiver_years)
+for i in range(list_len):
+    ptime = end_years[i] - start_years[i]
+    avg = str(int(receiver_yards[i]/ptime))
+    hof = ''
+    if receiver_names[i].endswith('+'):
+        hof = '(Hall of Fame)'
+        receiver_names[i] = receiver_names[i][:-1]
+    print(receiver_names[i] + " averaged " + avg + " yards per season over " + str(ptime) + " seasons. " + hof)
