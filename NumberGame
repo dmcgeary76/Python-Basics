@@ -1,0 +1,61 @@
+# Initial imports for the program
+import random
+from tkinter import *
+
+# Work with the Tkinter space
+'''
+top = Tk()
+L1 = Label(top, text='Input Number')
+L1.pack( side = LEFT)
+E1 = Entry(top, bd =5)
+E1.pack(side = RIGHT)
+top.mainloop()
+'''
+
+# Initialize variables
+target_num = random.randint(1, 100)
+player_num = 0
+won = False
+counter = 0
+diff_now = 0
+diff_then = 0
+
+# Collect the initial value from the user
+print('Welcome to the Random Guess Game!  The goal is to guess my number by inputing values between 1 and 100.')
+
+# Function to determine if input is legal?
+
+def is_legal():
+    print()
+    input_test = input('What number would you like to choose? ')
+    done = False
+    while (done == False):
+        if (input_test.isdigit() == False):
+            input_test = input('You entered an invalid number.  Please make another choice: ')
+        else:
+            if ((int(input_test) > 0) and (int(input_test) < 101)):
+                done = True
+            else:
+                input_test = input('Please choose a number between 1 and 100' + '(' + str(target_num) + '): ')
+    return input_test
+
+player_num = int(is_legal())
+
+# Time to play the game
+
+while (won == False):
+    diff_now = abs(player_num - target_num)
+    if counter > 0:
+        if (diff_now > diff_then and diff_now != 0):
+            print("You're getting colder.")
+        if (diff_now < diff_then and diff_now != 0):
+            print("You're getting hotter.")
+    diff_then = diff_now
+    print()
+    if (player_num == target_num):
+        print('You guessed correctly!')
+        won = True
+    else:
+        counter += 1
+        print('Wrong.  Try again.')
+        player_num = int(is_legal())
