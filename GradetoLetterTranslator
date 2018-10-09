@@ -30,12 +30,23 @@ for tr in grade_info.find_all('tr'):
 # The first element is the header - so returns an empty list and must be cleaved
 data = data[1:]
 
+
 # There is probably a better way to do this, but I am just setting up parallel lists to check against
 grade_letters = []
-grade_lbounds = []
+
 for item in data:
-    grade_letters.append(item[0])
-    grade_lbounds.append(item[-1][:2]) # Just looking for the first two digits here
+    temp_list = []
+    temp_list = [item[0], item[-1][:2]] # Just looking for the first two digits here
+    grade_letters.append(temp_list)
+
+# Make a few corrections here to make this list usable
+grade_letters = grade_letters[:-2]
+grade_letters[-1][1] = '0'
+for i in range(len(grade_letters)):
+    grade_letters[i][1] = float(grade_letters[i][1])
+grade_letters.reverse()
+    
+print(grade_letters)
 
 # Collect the grade to be evaluated and make sure that it is valid
 def is_float(num):
@@ -57,4 +68,20 @@ def get_num():
     return my_num
 
 # Valid input gets assigned to a global variable
-num = get_num()
+num = get_num()        
+
+# Do the grade evaluation
+done = False
+letter = ''
+while not done:
+    if num >= 90:
+        letter = 'A+'
+        done = True
+    else:
+        for j in range(len(grade_letters)):
+            if num < grade_letters[j+1][1]:
+                done = True
+                letter = grade_letters[j][0]
+                break
+
+print('The grade of ' + str(num) + ' corresponds to a Ryerson letter grade of ' + letter + '.')
