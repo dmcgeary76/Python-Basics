@@ -1,0 +1,25 @@
+# Program to determine if the elements in an input list are all ascending
+
+# Get the user input as a string
+user_input = ''
+user_input = input('Please enter a list: ')
+
+# Assume that there are two ways to split - on a comma or a white space
+user_list = []
+if ',' in user_input:
+    user_list = user_input.split(',')
+else:
+    user_list = user_input.split()
+
+def does_it_ascend(temp_list):
+    temp_bool = True
+    if len(temp_list) > 1: # control for 1 or 0 elements
+        for x in range(len(temp_list) - 1): # If it has two or more elements then compare
+            if (temp_list[(x+1)] <= temp_list[x]): # The evaluation
+                return False
+                break
+        return True
+    else:
+        return True
+
+print(does_it_ascend(user_list))
