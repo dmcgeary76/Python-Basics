@@ -1,0 +1,77 @@
+# Program to double a number until it contains all digits 0 - 9 or fails at 10000 double-ups
+fail_max = 10
+dbl_count = 0
+user_num = 0
+all_digits = False
+digit_list = ['1','2','3','4','5','6','7','8','9','0']
+
+# Collect the number input from the user and check that it is an integer
+done = False
+user_input = input('Please enter an integer value to begin: ')
+while not done:
+    if user_input.isdigit():
+        done = True
+    else:
+        user_input = input('That was not an integer.  Try again: ')
+
+# Convert the string to an integer
+user_num = int(user_input)
+
+# Double until all digits or until it fails
+done = False
+while not done:
+    if dbl_count == fail_max:
+        print('The process has maxed out.')
+        break
+    temp_string = str(user_num)
+    temp_bool = False
+    for item in digit_list:
+        if item in temp_string:
+            temp_bool = True
+        else:
+            temp_bool = False
+            break
+    if temp_bool:
+        done = True
+        print('Your number was doubled ' + str(dbl_count) + ' times to give ' + str(user_num))
+    else:
+        user_num = user_num * 2
+        dbl_count += 1# Program to double a number until it contains all digits 0 - 9 or fails at 10000 double-ups
+fail_max = 10
+dbl_count = 0
+user_num = 0
+all_digits = False
+digit_list = ['1','2','3','4','5','6','7','8','9','0']
+
+# Collect the number input from the user and check that it is an integer
+done = False
+user_input = input('Please enter an integer value to begin: ')
+while not done:
+    if user_input.isdigit():
+        done = True
+    else:
+        user_input = input('That was not an integer.  Try again: ')
+
+# Convert the string to an integer
+user_num = int(user_input)
+
+# Double until all digits or until it fails
+done = False
+while not done:
+    if dbl_count == fail_max:
+        print('The process has maxed out.')
+        break
+    temp_string = str(user_num)
+    temp_bool = False
+    for item in digit_list:
+        if item in temp_string:
+            temp_bool = True
+        else:
+            temp_bool = False
+            break
+    if temp_bool:
+        done = True
+        print('Your number was doubled ' + str(dbl_count) + ' times to give ' + str(user_num))
+    else:
+        user_num = user_num * 2
+        dbl_count += 1
