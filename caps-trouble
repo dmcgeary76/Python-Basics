@@ -1,0 +1,17 @@
+# Caps-Lock gets toggled every time the letter 'a' is encountered in a sentence.
+
+# Get the user input as a string:
+user_str = input('Please input a string: ')
+caps_on = False
+holder = ''
+
+for i in range(len(user_str)):
+    if user_str[i].lower() == 'a':                 # Toggle caps_on based on the character encountered
+        caps_on = not caps_on
+    else:
+        if user_str[i].isalpha() and caps_on:
+            holder = holder + user_str[i].upper()  # Switch the case if a letter not a
+        else:
+            holder = holder + user_str[i]
+
+print(holder)
