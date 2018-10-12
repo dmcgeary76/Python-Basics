@@ -1,0 +1,56 @@
+'''
+Determine the scrabble score of a word from the standard US Scrabble Score page.  Find the highest value word
+in a txt file provided.
+
+I am going to try this exercise by webscraping the Scrabble score data first to give
+me some practice with BeautifulSoup again.
+'''
+
+# Do some imports for the Webscraping
+from bs4 import BeautifulSoup as bs
+import requests
+
+# Retrieve the Ryerson page text and parse it
+page = requests.get('https://en.wikipedia.org/wiki/Scrabble_letter_distributions#English')
+soup = bs(page.text, 'html.parser')
+
+# Let's corral the data now
+# Borrowed the method from here: https://www.youtube.com/watch?v=F1kZ39SvuGE&list=LL5pls3nT1zMLKQRnh1eu64g&index=5&t=0s
+grade_info = soup.find_all('ul')
+us_scores = grade_info[3]
+
+data = []
+for li in us_scores.find_all('li'):
+    values = [b.text for b in li.find_all('b')]
+    data.append(values)
+
+data_values = [0,1,2,3,4,5,8,10]
+
+input_word = input('Please enter a word: ')
+score = 0
+
+def get_score(temp_word, temp_data, temp_values):
+    temp_score = 0
+    for i in range(len(temp_word)):
+        letter = temp_word[i].upper()
+        for j in range(len(temp_data)):
+            if letter in temp_data[j]:
+                temp_score += temp_values[j]
+    return temp_score
+
+score = get_score(input_word, data, data_values)
+print(score)
+
+words = open('C:\words.txt', 'r')
+word_list = [line.split('\n') for line in words.readlines()]
+
+hi_word = ''
+hi_score = 0
+for item in word_list:
+    temp_hi_score = get_score(item[0], data, data_values)
+    if temp_hi_score > hi_score:
+        hi_word = item[0]
+        hi_score = temp_hi_score
+
+print('The highest scoring word in the text file is ' + hi_word + ' with a score of ' + str(hi_score) + '.')
+
