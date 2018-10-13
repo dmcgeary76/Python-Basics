@@ -1,0 +1,27 @@
+'''
+def create_zigzag(rows, cols, start = 1):
+
+This function creates a list of lists that represents a two-dimensional grid with the given number of rows and cols.
+This grid should contain the integers from start to start + rows * cols - 1 in ascending order, but so that the elements
+of every odd-numbered row are listed in descending order, so that when read in ascending order, the numbers zigzag
+through the two-dimensional grid.
+'''
+
+# Get the initial values
+columns = int(input('Enter the number of columns: '))
+rows = int(input('Enter the number of rows: '))
+
+# Initialize the list
+final_list = []
+
+for i in range(rows):                       # Setup the rows
+    temp_list = []
+    count = columns * i
+    for j in range(columns):                # Use Columns value to add numbers to temp list
+        temp_list.append(j + 1 + count)
+    if (i % 2) == 0:
+        final_list.append(temp_list)
+    else:
+        final_list.append(temp_list[::-1])  # Reverse the list if too lazy for arrays
+
+print(final_list)
