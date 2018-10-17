@@ -1,0 +1,37 @@
+'''
+Given a list of elements, create and return a list whose elements are lists that contain the consecutive runs of equal
+elements of the original list. Note that elements that are not duplicated in the original list should become singleton
+lists in the result, so that every element gets included in the resulting list of lists.
+'''
+
+# Initialize a few variables
+input_list = []
+count = 0
+length_list = 0
+
+# Get the initial input_list and split it to a list
+input_list = input('Enter the test list: ').split(',')
+
+# Figure out how many primary lists are in the final list array
+for i in range(len(input_list)-1):
+    if input_list[i] != input_list[i+1]:
+        length_list += 1
+
+final_array = [[0] for i in range(length_list)]
+
+if len(input_list) == 1:
+    final_array = input_list
+else:
+    temp_list = []
+    for i in range(len(input_list)-1):
+        if input_list[i] == input_list[i+1]:
+            temp_list.append(input_list[i])
+        else:
+            temp_list.append(input_list[i])
+            final_array[count] = temp_list
+            count += 1
+            temp_list = []
+    temp_list.append(input_list[len(input_list)-1])
+    final_array.append(temp_list)
+
+print(final_array)
