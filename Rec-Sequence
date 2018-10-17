@@ -1,0 +1,30 @@
+'''
+Given a number of elements, n, calculate the rec sequence from a1 = 1 through to the end of the sequence a.n.  Following
+the rules of the rec sequence, the lower value is only added if it is > 0 and not in the sequence already, otherwise
+the higher value is added.  To make life easier (and because I am only interested in the math this time) all n values
+will be greater than 1.
+'''
+
+# As recommended, each value printed is added to a picked_list to check against and the actual values are printed
+picked_list = []
+
+num = int(input('Choose the value of n for the Rec Sequence: '))
+temp_num = 1
+
+picked_list.append(0)
+
+for i in range(1, num+1):
+    temp_num = picked_list[i-1] - i
+    if temp_num > 0 and temp_num not in picked_list:
+        if i == num:
+            print(temp_num)
+        else:
+            print(temp_num,end=', ')
+        picked_list.append(temp_num)
+    else:
+        temp_num = picked_list[i-1] + i
+        if i == num:
+            print(temp_num)
+        else:
+            print(temp_num,end=', ')
+        picked_list.append(temp_num)
