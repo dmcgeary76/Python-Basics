@@ -17,13 +17,15 @@ for i in range(len(input_list)-1):
     if input_list[i] != input_list[i+1]:
         length_list += 1
 
+# Initialize a multi-diemensional list for final_array
 final_array = [[0] for i in range(length_list)]
 
-if len(input_list) == 1:
+# Fill the list with appropriate content
+if len(input_list) == 1:                                # Create a single item list 
     final_array = input_list
 else:
     temp_list = []
-    for i in range(len(input_list)-1):
+    for i in range(len(input_list)-1):                  # Create a temp_list of matching items
         if input_list[i] == input_list[i+1]:
             temp_list.append(input_list[i])
         else:
