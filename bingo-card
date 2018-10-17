@@ -1,0 +1,94 @@
+'''
+A two-dimensional grid of elements is represented as a list whose elements are themselves lists that represent the
+individual rows of the grid. This representation generalizes easily to structures of arbitrary dimensionality k by
+using a list whose elements represent structures of dimension k - 1. In this problem, your task is to determine whether
+the given 5-by-5 bingo card contains a bingo, that is, all the numbers of some row or some column are included in the
+list of drawn numbers.
+
+I chose to to usual random numbers to fill the bingo card and another random picker to pull values until a bingo is won.
+'''
+
+import random
+import time
+
+# Initialize some lists
+picked = []
+
+# Get some initial values
+columns = int(input('Input the number of rows /columns: '))
+rows = columns
+
+if columns % 2 != 0:
+    free_space = input('Do you want a center free space? (Y/N): ')
+else:
+    free_space = 'N'
+
+# Initialize the board
+bingo_card = [[0] * columns for i in range(rows)]
+
+# Initialize the Bingo card list
+for i in range(rows):
+    for j in range(columns):
+        done = False
+        while not done:
+            random_num = random.randint(1, 100)
+            if random_num not in picked:
+                bingo_card[i][j] = random_num
+                picked.append(random_num)
+                done = True
+
+if free_space.upper() == 'Y':
+    temp_num = int((rows-1)/2)
+    bingo_card[temp_num][temp_num] = 0
+
+def print_board(board):
+    for i in range(rows):
+        print(board[i])
+
+print('Your current board:')
+print_board(bingo_card)
+
+def check_bingo(board):
+    temp_state = False
+    for i in range(rows):
+        if sum(board[i]) == 0:
+            temp_state = True
+            # print('a row is full')
+    for i in range(rows):
+        temp_sum = 0
+        for j in range(rows):
+            temp_sum += board[j][i]
+        if temp_sum == 0:
+            temp_state = True
+            # print('a column is full')
+    temp_diag = 0
+    for i in range(rows):
+        temp_diag += board[i][i]
+    if temp_diag == 0:
+        temp_state = True
+    temp_diag = 0
+    for i in range(rows):
+        temp_diag += board[i][rows-i-1]
+    if temp_diag == 0:
+        temp_state = True
+    return temp_state
+
+balls_drawn = []
+
+while not check_bingo(bingo_card):
+    print_board(bingo_card)
+    #time.sleep(5)
+    done = False
+    temp_ball = 0
+    while not done:
+        temp_ball = random.randint(1, 100)
+        if temp_ball not in balls_drawn:
+            done = True
+            balls_drawn.append(temp_ball)
+    print('The next ball is: ' + str(temp_ball))
+    for i in range(rows):
+        for n, j in enumerate(bingo_card[i]):
+            if j == temp_ball:
+                bingo_card[i][n] = 0
+
+print_board(bingo_card)
